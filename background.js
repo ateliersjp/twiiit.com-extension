@@ -13,23 +13,6 @@ chrome.webNavigation.onBeforeNavigate.addListener(
   { urls: ["https://*/*"] },
 );
 
-chrome.webNavigation‎.onHeadersReceived.addListener(
-  (details) => {
-    const url = new URL(details.url);
-    if (url.hostname === "twitt.jp") {
-      if (details.statusCode === 301 || details.statusCode === 302) {
-        const locationHeader = details.responseHeaders.find(header => header.name.toLowerCase() === 'location');
-        if (locationHeader) {
-          const locationUrl = new URL(locationHeader.value);
-          instance.value = locationUrl.hostname;
-        }
-      }
-    }
-  },
-  { urls: ["https://*/*"] },
-  ["responseHeaders"]
-);
-
 chrome.webNavigation‎.onCompleted.addListener(
   (details) => {
     const url = new URL(details.url);
@@ -37,6 +20,14 @@ chrome.webNavigation‎.onCompleted.addListener(
       if (!details.statusCode || details.statusCode === 429) {
         url.hostname = "twitt.jp";
         chrome.tabs.update(details.tabId, { url: url.href });
+      }
+    } else if (url.hostname === "twitt.jp") {
+      if (details.statusCode === 301 || details.statusCode === 302) {
+        const locationHeader = details.responseHeaders.find(header => header.name.toLowerCase() === 'location');
+        if (locationHeader) {
+          const locationUrl = new URL(locationHeader.value);
+          instance.value = locationUrl.hostname;
+        }
       }
     }
   },
