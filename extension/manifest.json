@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "404 Redirector",
+  "version": "1.0",
+  "description": "If a request sends to x.com/twitter.com, jump to an Nitter instance.",
+  "permissions": [
+    "webRequest",
+    "webNavigation",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Nitter Redirector"
+  }
+}
